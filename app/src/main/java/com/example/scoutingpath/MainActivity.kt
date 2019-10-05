@@ -14,7 +14,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
-
+    val X_OFFSET = 423 // X offset so that x,y are relative to the field.
+    val Y_OFFSET = 393 // Y offset so that x,y are relative to the field
     override fun onCreate(savedInstanceState: Bundle?) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
         super.onCreate(savedInstanceState)
@@ -24,16 +25,18 @@ class MainActivity : AppCompatActivity() {
         // code from https://xjaphx.wordpress.com/2011/06/13/detect-xy-coordinates-when-clicking-or-touching-on-screen/
         // and https://stackoverflow.com/questions/3294590/set-the-absolute-position-of-a-view
         // and a lot of other places on the internet
-        if (event.action == MotionEvent.ACTION_DOWN) {
-            val x = event.x
-            val y = event.y
-            xy.setText("X: " + x + " Y: " + y)
-            val layout  = R.layout.activity_main
+        if (event.action == MotionEvent.ACTION_DOWN) { // It's a tap
+            val x = event.x - X_OFFSET // Correct for the field image placement
+            val y = event.y - Y_OFFSET
+
+            xy.setText("X: " + x + " Y: " + y) // update debug x,y
+
+            val layout  = R.layout.activity_main //
             var iv: ImageView
             iv = ImageView(this)
             c.addView(iv)
-            iv.x = x
-            iv.y = y - 180 // no clue why in the name of Android this is needed, but it is...
+            iv.x = event.x // event.x is a screen coordinate, whereas x is a corrected field coordinate.
+            iv.y = event.y - 180 // no clue why in the name of Android this is needed, but it is...
             iv.layoutParams.height = 10
             iv.layoutParams.width = 10
             iv.setBackgroundColor(Color.RED)
