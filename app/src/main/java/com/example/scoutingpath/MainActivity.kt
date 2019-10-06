@@ -72,11 +72,11 @@ class MainActivity : AppCompatActivity() {
         // Handle the Submit button press.
         var submissionString = ""
         for (array in points){
-            submissionString +=  points.indexOf(array).toString() + ',' + array[0] + "," + array[1] + '\n'
+            submissionString +=   array[0].toString() + "," + array[1] + '\n'
         }
         xy.setText(submissionString)
 
-        val fileName = "scouting-path-" + Calendar.getInstance().time + ".csv"
+        val fileName = match.text.toString() + '-' + name.text + ".csv"
         if (isExternalStorageWritable()) {
             val file = File(this.filesDir, fileName)
             file.writeText(submissionString)

@@ -1,3 +1,3 @@
 # Scouting Path app
 
-Data saved to ``scouting-path-{time}.csv`
+Data saved to ``{match}-{name}.csv`
