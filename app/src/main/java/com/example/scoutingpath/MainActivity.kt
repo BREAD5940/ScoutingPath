@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.view.MotionEvent
+import android.view.View
 import android.widget.ImageView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -12,8 +13,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
-    var X_OFFSET = 0
+    var X_OFFSET = 0 // X and Y offsets
     var Y_OFFSET = 0
+
+    var points = ArrayList<FloatArray>() // Array of array to track points tapped.
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
         super.onCreate(savedInstanceState)
@@ -35,6 +39,7 @@ class MainActivity : AppCompatActivity() {
             // magic numbers zzzz
             val x = event.x - X_OFFSET// Correct for the field image placement
             val y = event.y - Y_OFFSET
+            points.add(floatArrayOf(x,y))
 
             xy.setText("X: " + x + " Y: " + y +" " + X_OFFSET + "/" + Y_OFFSET) // update debug x,y
 
@@ -52,4 +57,13 @@ class MainActivity : AppCompatActivity() {
         return super.onTouchEvent(event)
     }
 
+    public fun handleSubmit(view: View) {
+        // Handle the Submit button press.
+        var submissionString = "SUBMITTED: "
+        for (array in points){
+            submissionString += "[" + array[0] + ", " + array[1] + ']'
+        }
+        xy.setText(submissionString)
+    }
 }
+
