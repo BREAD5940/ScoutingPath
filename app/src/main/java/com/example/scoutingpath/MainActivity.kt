@@ -1,5 +1,6 @@
 package com.example.scoutingpath
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.content.pm.ActivityInfo
@@ -7,9 +8,12 @@ import android.graphics.Color
 import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
+import android.os.Environment
+import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
-
-
+import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
@@ -17,6 +21,11 @@ class MainActivity : AppCompatActivity() {
     var Y_OFFSET = 0
 
     var points = ArrayList<FloatArray>() // Array of array to track points tapped.
+
+
+    fun isExternalStorageWritable(): Boolean {
+        return Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
@@ -59,11 +68,17 @@ class MainActivity : AppCompatActivity() {
 
     public fun handleSubmit(view: View) {
         // Handle the Submit button press.
-        var submissionString = "SUBMITTED: "
+        var submissionString = ""
         for (array in points){
-            submissionString += "[" + array[0] + ", " + array[1] + ']'
+            submissionString += "[" + array[0] + ", " + array[1] + "],"
         }
         xy.setText(submissionString)
+
+        val fileName = "scouting-path-" + Calendar.getInstance().time
+        if (isExternalStorageWritable()) {
+            val file = File(this.filesDir, fileName)
+            file.writeText(submissionString)
+        }
     }
 }
 
