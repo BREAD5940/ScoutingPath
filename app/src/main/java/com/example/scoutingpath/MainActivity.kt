@@ -67,14 +67,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     public fun handleSubmit(view: View) {
+
+        // Data format: |x1,y1|x2,y2|x3,y3|
+        // In scouting-path-{time].txt
         // Handle the Submit button press.
-        var submissionString = ""
+        var submissionString = "|"
         for (array in points){
-            submissionString += "[" + array[0] + ", " + array[1] + "],"
+            submissionString += "" + array[0] + "," + array[1] + "|"
         }
         xy.setText(submissionString)
 
-        val fileName = "scouting-path-" + Calendar.getInstance().time
+        val fileName = "scouting-path-" + Calendar.getInstance().time + ".txt"
         if (isExternalStorageWritable()) {
             val file = File(this.filesDir, fileName)
             file.writeText(submissionString)
